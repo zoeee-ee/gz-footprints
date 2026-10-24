@@ -97,24 +97,35 @@ main{max-width:1500px;margin:0 auto;padding:14px;display:grid;grid-template-colu
 #login{z-index:90}
 #login .dialog{width:min(380px,100%);padding:22px}#login h3{margin:0 0 4px;font-size:18px}#login p{margin:0 0 12px;font:13px system-ui,sans-serif;color:var(--mute)}
 #login input{width:100%;padding:9px 10px;border:1px solid #c9bda7;border-radius:4px;background:#fffdf7}
-#loginErr{color:#a8322b;font:13px system-ui,sans-serif;min-height:20px;margin-top:6px}
+#loginErr{color:#a8322b;font:13px/1.5 system-ui,sans-serif;min-height:20px;margin-top:6px}
 #toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#2a2620;color:#fff;padding:9px 16px;border-radius:6px;font:13px system-ui,sans-serif;opacity:0;pointer-events:none;transition:.25s;z-index:99;max-width:90vw;display:flex;gap:12px;align-items:center}
 #toast.show{opacity:1;pointer-events:auto}#toast button{background:none;border:0;color:#ffd37a;font-weight:700;padding:0;text-decoration:underline}
-
-/* ---------- 首次访客引导 ---------- */
-#tour{position:fixed;inset:0;background:#17130db8;display:none;align-items:center;justify-content:center;padding:18px;z-index:110}
-#tour.open{display:flex}
-.tourCard{width:min(440px,100%);background:var(--paper);border:1px solid var(--gold);border-radius:10px;padding:22px;box-shadow:0 18px 60px #0007}
-.tourEyebrow{font:12px system-ui,sans-serif;color:var(--mute);letter-spacing:.04em}
-.tourCard h2{font-size:21px;line-height:1.35;margin:6px 0 10px}
-.tourCard p{margin:0;color:#554a38;font-size:15px}
-.tourDots{display:flex;gap:6px;margin:18px 0}
-.tourDots i{display:block;width:22px;height:4px;border-radius:4px;background:#d8cdb4}
-.tourDots i.on{background:var(--red);width:34px}
-.tourActions{display:flex;align-items:center;gap:8px;justify-content:space-between;font:13px system-ui,sans-serif}
-.tourActions button{border:1px solid #bfb299;background:#fffaf0;border-radius:5px;padding:7px 12px}
-.tourActions .primary{background:var(--red);border-color:var(--red);color:#fff}
-#tourSkip{border:0;background:transparent;color:var(--mute);text-decoration:underline;padding-left:0}
+/* 照片排序 */
+.thw{position:relative}.mv{position:absolute;top:4px;left:4px;right:4px;display:flex;justify-content:space-between;pointer-events:none}
+.mv button{pointer-events:auto;background:#000c;color:#fff;border:0;border-radius:4px;width:28px;height:28px;font-size:14px;padding:0}.mv button:disabled{opacity:.25}
+.thw .cv{position:absolute;left:4px;bottom:26px;background:var(--red);color:#fff;font:11px system-ui,sans-serif;padding:1px 7px;border-radius:3px;pointer-events:none}
+.thw.dover .th{outline:3px solid var(--amber)}.thw[draggable=true]{cursor:grab}
+/* 专题路线 */
+.pin[data-n]{width:24px;height:24px;left:-12px;top:-12px}.pin[data-n]:after{content:attr(data-n);inset:0;background:none;color:#fff;font:700 12px/19px system-ui,sans-serif;text-align:center;opacity:1}
+#routeSvg{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;overflow:visible}
+#routeBar{display:none;position:absolute;left:10px;right:64px;bottom:12px;z-index:8;background:#2a2620f2;color:#f6efe0;border-radius:8px;padding:10px 12px;font:13px/1.55 system-ui,sans-serif;box-shadow:0 4px 16px #0006}
+#routeBar.show{display:block}#routeBar b{color:#ffd37a;font-size:14px}#routeBar .row{display:flex;flex-wrap:wrap;gap:6px;margin-top:8px}
+#routeBar button{border:1px solid #6a6252;background:#3b362d;color:#f6efe0;border-radius:4px;padding:5px 11px;font-size:13px}#routeBar button.pri{background:var(--red);border-color:var(--red)}#routeBar button:disabled{opacity:.35}
+.routing .legend{display:none}
+.rcard{display:block;width:100%;text-align:left;background:#fffaf0;border:1px solid #cdbf9f;border-radius:6px;padding:12px 14px;margin-top:10px}.rcard:hover{background:#fff;border-color:var(--gold)}
+.rcard h4{margin:0 0 3px;font-size:16px}.rcard p{margin:0 0 6px;font:13px/1.6 system-ui,sans-serif;color:#5b5140}.rcard small{font:12px system-ui,sans-serif;color:var(--mute)}
+.rrow{display:flex;gap:6px;align-items:center;background:#fffdf7;border:1px solid #d8cdb4;border-radius:4px;padding:4px 8px;margin-top:5px;font:14px system-ui,sans-serif}.rrow span{flex:1}.rrow button{border:0;background:#efe6d0;border-radius:4px;width:28px;height:28px;padding:0}
+.sheet{width:min(560px,100%);padding:18px 20px 20px}.sheet h3{margin:0 0 2px;font-size:19px}.sheet .sub{font:13px system-ui,sans-serif;color:var(--mute);margin:0 0 6px}
+.sheet label{display:block;font:13px system-ui,sans-serif;color:#6f604a;margin:12px 0 4px}.sheet input[type=text],.sheet textarea,.sheet select{width:100%;padding:8px 10px;border:1px solid #c9bda7;background:#fffdf7;border-radius:3px}.sheet textarea{min-height:70px}
+.sheet .acts{display:flex;gap:8px;justify-content:flex-end;margin-top:14px;flex-wrap:wrap}
+.pri{background:var(--red)!important;color:#fff!important;border-color:var(--red)!important}
+#routes,#routeEd,#trash{z-index:60}
+/* 首次引导 */
+#tour{position:fixed;inset:0;z-index:120;display:none}#tour.open{display:block}
+#tourHole{position:fixed;border-radius:8px;box-shadow:0 0 0 9999px #0009;border:2px solid var(--gold);transition:all .25s;pointer-events:none}
+#tourCard{position:fixed;width:min(320px,calc(100vw - 20px));background:var(--paper);border-radius:8px;padding:14px 16px;box-shadow:0 10px 36px #000a;font:14px/1.6 system-ui,sans-serif}
+#tourCard h4{margin:0 0 4px;font:700 16px/1.4 "Noto Serif SC",serif}#tourCard .n{font-size:12px;color:var(--mute)}#tourCard .acts{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
+#tourCard button{border:1px solid #bfb299;background:#fffaf0;border-radius:4px;padding:5px 12px}
 @keyframes up{from{transform:translateY(40px);opacity:.4}to{transform:none;opacity:1}}
 @media(max-width:900px){main{grid-template-columns:1fr;padding:8px}.side{position:static;max-height:none}.list{max-height:300px}#vp{height:68vh;min-height:360px}.legend{display:none}}
 @media(max-width:700px){.modal{align-items:flex-end;padding:0;background:#15120d88}.dialog{width:100%;max-height:86vh;border-radius:16px 16px 0 0;animation:up .25s ease-out}.dh{padding:14px 16px 8px}.db{padding:4px 16px 24px}.dh h2{font-size:19px}}
@@ -130,14 +141,15 @@ main{max-width:1500px;margin:0 auto;padding:14px;display:grid;grid-template-colu
   <button class="tbtn only-edit" id="tCal" title="拖动红点校准位置">📍 校准点位:关</button>
   <button class="tbtn only-edit" id="tAdd">＋ 新增地点</button>
   <span class="sp"></span>
-  <button class="tbtn" id="tCore">老城区</button><button class="tbtn" id="tAll">全图</button><button class="tbtn only-view" id="tHelp">使用提示</button>
+  <button class="tbtn" id="tRoutes">🧭 专题路线</button><button class="tbtn" id="tHelp" title="使用指南">？</button>
+  <button class="tbtn" id="tCore">老城区</button><button class="tbtn" id="tAll">全图</button>
  </div>
  <div id="vp">
   <img id="base" alt="" src="tiles/preview.jpg" draggable="false"><div id="tiles"></div>
   <div id="layer"></div>
   <div id="mapLoad">地图加载中…</div>
   <canvas id="lens" width="280" height="280"></canvas><div id="lensTxt"></div>
-  <div id="calbar"></div>
+  <div id="calbar"></div><div id="routeBar"></div>
   <div class="legend"><span><i></i>暂无记录</span><span><i class="g"></i>已有记录</span></div>
   <div class="zoomc"><button id="zi" aria-label="放大">＋</button><button id="zo" aria-label="缩小">－</button></div>
  </div>
@@ -149,6 +161,7 @@ main{max-width:1500px;margin:0 auto;padding:14px;display:grid;grid-template-colu
  <div class="list" id="list"></div>
  <div class="tools only-edit">
   <button id="bExp">⬇ 导出数据备份</button><button id="bImp">⬆ 导入旧备份</button>
+  <button id="bTrash" class="w">🗑 已删除的地点</button>
   <button id="bRst" class="w">重置全部点位到初始位置</button>
  </div>
  <input type="file" id="impFile" accept="application/json" hidden>
@@ -171,7 +184,6 @@ main{max-width:1500px;margin:0 auto;padding:14px;display:grid;grid-template-colu
     <label for="iDist">行政区</label><input type="text" id="iDist">
     <label for="iCat">分类</label><select id="iCat"></select>
     <label for="iDesc">历史背景介绍</label><textarea id="iDesc"></textarea>
-    <button class="dangerbtn" id="delPlace" style="display:none">删除这个地点</button>
    </div>
    <label for="fDate">参观时间</label><input type="date" id="fDate">
    <label for="fNote">个人感想 / 寻访笔记</label><textarea id="fNote" placeholder="写下现场观察、印象、值得回看的细节……"></textarea>
@@ -181,23 +193,28 @@ main{max-width:1500px;margin:0 auto;padding:14px;display:grid;grid-template-colu
    <div class="grid" id="grid"></div>
    <div class="drop" id="drop">也可以把照片直接拖到这里 · 手机上可直接拍照上传<br><span style="font-size:12px">上传前会自动压缩,并去掉照片里的 GPS 位置和设备信息</span></div>
    <div id="saved"></div>
+   <button class="dangerbtn" id="delPlace">🗑 删除这个地点</button>
   </div>
  </div>
 </div></div>
 
 <div class="lb" id="lb"><img id="lbImg" alt=""><div class="cap" id="lbCapTxt"></div><input id="lbCap" class="only-edit" placeholder="给这张照片写一句说明…">
- <div class="r"><button id="lbPrev">‹ 上一张</button><span id="lbIdx" style="color:#cfc2a8;font:13px system-ui"></span><button id="lbNext">下一张 ›</button><button class="d only-edit" id="lbDel">删除</button><button id="lbClose">关闭</button></div></div>
+ <div class="r"><button id="lbPrev">‹ 上一张</button><span id="lbIdx" style="color:#cfc2a8;font:13px system-ui"></span><button id="lbNext">下一张 ›</button><button class="only-edit" id="lbL">⇤ 前移</button><button class="only-edit" id="lbR">后移 ⇥</button><button class="d only-edit" id="lbDel">删除</button><button id="lbClose">关闭</button></div></div>
 
 <div class="modal" id="login"><div class="dialog"><h3>进入编辑模式</h3><p>请输入编辑密码。只有你自己需要这一步,访客不用。</p>
  <input type="password" id="pw" placeholder="编辑密码" autocomplete="current-password"><div id="loginErr"></div>
  <div style="display:flex;gap:8px;justify-content:flex-end;margin-top:8px"><button class="x" id="loginCancel">取消</button><button class="x" style="background:var(--red);color:#fff;border-color:var(--red)" id="loginOk">进入</button></div></div></div>
-<div id="tour" aria-hidden="true"><section class="tourCard" role="dialog" aria-modal="true" aria-labelledby="tourTitle">
- <div class="tourEyebrow" id="tourCount">地图小指南 · 1/3</div>
- <h2 id="tourTitle">点地图标记，打开地点</h2>
- <p id="tourText">点击红色标记，可以查看这处遗迹的参观记录、个人感想和现场照片。</p>
- <div class="tourDots" id="tourDots" aria-hidden="true"><i class="on"></i><i></i><i></i></div>
- <div class="tourActions"><button id="tourSkip">跳过</button><div style="display:flex;gap:8px"><button id="tourPrev" style="display:none">上一步</button><button id="tourNext" class="primary">下一步</button></div></div>
-</section></div>
+<div class="modal" id="routes"><div class="dialog sheet"><h3>🧭 专题路线</h3><p class="sub">跟着一个主题,一站一站地走。</p><div id="routeList"></div>
+ <div class="acts"><button class="x only-edit" id="routeNew">＋ 新建专题</button><button class="x" id="routesClose">关闭</button></div></div></div>
+<div class="modal" id="routeEd"><div class="dialog sheet"><h3 id="reTitle">编辑专题</h3>
+ <label>专题名称</label><input type="text" id="reName"><label>一句话介绍</label><textarea id="reIntro"></textarea>
+ <label>路线上的地点(按顺序)</label><div id="reStops"></div>
+ <label>添加地点</label><select id="reAdd"></select>
+ <div class="acts"><button class="dangerbtn" id="reDel" style="margin:0 auto 0 0">删除专题</button><button class="x" id="reCancel">取消</button><button class="x pri" id="reSave">保存</button></div></div></div>
+<div class="modal" id="trash"><div class="dialog sheet"><h3>🗑 已删除的地点</h3><p class="sub">这些预置地点已从地图上移除,可以随时恢复。</p><div id="trashList"></div>
+ <div class="acts"><button class="x" id="trashClose">关闭</button></div></div></div>
+<div id="tour"><div id="tourHole"></div><div id="tourCard"><div class="n" id="tourN"></div><h4 id="tourT"></h4><div id="tourD"></div>
+ <div class="acts"><button id="tourSkip">跳过</button><span><button id="tourPrev">上一步</button> <button class="pri" id="tourNext">下一步</button></span></div></div></div>
 <div id="toast"><span id="toastMsg"></span><button id="toastAct" style="display:none"></button></div>
 
 <script>
@@ -219,14 +236,15 @@ const plist=p=>D.photos[sid(p)]||[];
 const hasRec=p=>{const r=getR(p);return !!(r.date||r.note)||plist(p).length>0};
 function mk(b,custom){const o=D.places[String(b.id)]||{},i=o.info||{};
  return{id:b.id,name:i.name||b.name,district:i.district??b.district,category:i.category||b.category,desc:i.desc??b.desc,x:o.x??b.x,y:o.y??b.y,x0:b.x,y0:b.y,custom}}
-function buildPlaces(){places=PLACES.map(b=>mk(b,false)).concat((D.custom||[]).map(c=>mk(c,true)))}
+function buildPlaces(){places=PLACES.filter(b=>!(D.places[String(b.id)]||{}).deleted).map(b=>mk(b,false)).concat((D.custom||[]).map(c=>mk(c,true)));
+ const alive=new Set(places.map(sid));Object.keys(pw).forEach(k=>{if(!alive.has(k)){pw[k].remove();delete pw[k];delete pinEl[k]}})}
 const byId=id=>places.find(p=>String(p.id)===String(id));
 /* ---------- 云端保存 ---------- */
 let saveT=0,saving=false,dirty=false,again=false;
 function setSync(s,t){const e=$('sync');e.className=s;e.textContent=t}
 function markDirty(){if(!EDIT)return;dirty=true;setSync('busy','☁ 保存中…');clearTimeout(saveT);saveT=setTimeout(doSave,700)}
 async function doSave(){if(saving){again=true;return}saving=true;dirty=false;
- try{const r=await api('data',{method:'PUT',headers:{'content-type':'application/json'},body:JSON.stringify({baseRev:D.rev,places:D.places,custom:D.custom,photos:D.photos})});
+ try{const r=await api('data',{method:'PUT',headers:{'content-type':'application/json'},body:JSON.stringify({baseRev:D.rev,places:D.places,custom:D.custom,photos:D.photos,routes:D.routes})});
   if(r.status===409){setSync('err','⚠ 有冲突');if(confirm('云端内容在别的设备上更新过。\n点"确定"刷新载入最新内容(你这次未保存的改动会丢失);点"取消"保留当前页面。'))location.reload();saving=false;return}
   if(!r.ok)throw new Error(r.status);const j=await r.json();D.rev=j.rev;if(!dirty){setSync('ok','☁ 已保存');$('saved')&&($('saved').textContent='✓ 已保存到云端')}}
  catch(e){dirty=true;setSync('err','⚠ 保存失败,点此重试');}
@@ -252,7 +270,7 @@ function fitCore(anim=true){const xs=places.map(p=>p.x).sort((a,b)=>a-b),ys=plac
  const q=(a,f)=>a[Math.min(a.length-1,Math.max(0,Math.round(f*(a.length-1))))];
  const t=boxTarget(q(xs,.06)/100*W,q(ys,.06)/100*H,q(xs,.94)/100*W,q(ys,.94)/100*H,60,1.2);if(anim)animateTo(t);else{Object.assign(view,t);applyNow()}}
 function fitAll(){const[vw,vh]=vsize();const s=Math.min(vw/W,vh/H);animateTo({s,tx:(vw-W*s)/2,ty:(vh-H*s)/2})}
-function flyTo(p,s){const[vw,vh]=vsize(),[x,y]=wxy(p);s=Math.max(view.s,s||.5);animateTo({s,tx:vw/2-x*s,ty:vh/2-y*s},450)}
+function flyTo(p,s,dy){const[vw,vh]=vsize(),[x,y]=wxy(p);s=Math.max(view.s,s||.5);animateTo({s,tx:vw/2-x*s,ty:vh/2-y*s-(dy||0)},450)}
 /* ---------- 瓦片 ---------- */
 const tileEls=new Map();
 const lvDim=z=>({lw:Math.round(W/Math.pow(2,z)),lh:Math.round(H/Math.pow(2,z))});
@@ -271,7 +289,7 @@ function updateTiles(){const[vw,vh]=vsize(),dpr=Math.min(2,window.devicePixelRat
  if(view.s<.8){baseImg.style.display='';baseImg.style.left=view.tx+'px';baseImg.style.top=view.ty+'px';baseImg.style.width=W*view.s+'px';baseImg.style.height=H*view.s+'px'}else baseImg.style.display='none'}
 baseImg.onload=()=>{$('mapLoad').style.display='none'};
 /* ---------- 过滤 / pin ---------- */
-function match(p){if(filter!=='全部'&&p.category!==filter)return false;if(query){if(!(p.name+p.district+p.category).toLowerCase().includes(query.toLowerCase()))return false}return true}
+function match(p){if(route&&routeIdx(p)<0)return false;if(filter!=='全部'&&p.category!==filter)return false;if(query){if(!(p.name+p.district+p.category).toLowerCase().includes(query.toLowerCase()))return false}return true}
 const cv=document.createElement('canvas').getContext('2d');cv.font='600 12.5px "Noto Sans SC",system-ui,sans-serif';
 const pw={},pinEl={};let clEls=[];
 function makePin(p){const k=sid(p);if(pw[k])return;const w=document.createElement('div');w.className='pw';const b=document.createElement('button');b.className='pin';b.setAttribute('aria-label',p.name);
@@ -303,9 +321,9 @@ function layout(){const[vw,vh]=vsize();clEls.forEach(e=>e.remove());clEls=[];
  const items=[];places.forEach(p=>{makePin(p);const el=pw[sid(p)];if(!match(p)){el.style.display='none';return}
   p._sx=p.x/100*W*view.s+view.tx;p._sy=p.y/100*H*view.s+view.ty;
   if(p._sx<-60||p._sx>vw+60||p._sy<-30||p._sy>vh+30){el.style.display='none';return}el.style.display='';
-  if(!p._lw){cv.font='600 12.5px "Noto Sans SC",system-ui,sans-serif';p._ln=short(p.name);p._lw=cv.measureText(p._ln).width+14;el.querySelector('.lbl').textContent=p._ln}items.push(p)});
+  const ri=routeIdx(p),txt=(ri>=0?(ri+1)+'. ':'')+short(p.name);if(p._ln!==txt){cv.font='600 12.5px "Noto Sans SC",system-ui,sans-serif';p._ln=txt;p._lw=cv.measureText(txt).width+14;el.querySelector('.lbl').textContent=txt}items.push(p)});
  const singles=[],groups=[],used=new Set(),CL=24,forced=q=>(selected&&q.id===selected.id)||(dragging&&dragging.p===q);
- if(calibrating||adding)singles.push(...items);else items.forEach(p=>{if(used.has(p.id))return;used.add(p.id);if(forced(p)){singles.push(p);return}
+ if(calibrating||adding||route)singles.push(...items);else items.forEach(p=>{if(used.has(p.id))return;used.add(p.id);if(forced(p)){singles.push(p);return}
   const g=[p];items.forEach(q=>{if(!used.has(q.id)&&!forced(q)&&Math.hypot(q._sx-p._sx,q._sy-p._sy)<CL){g.push(q);used.add(q.id)}});g.length>1?groups.push(g):singles.push(p)});
  const keep=new Set(singles.map(sid));items.forEach(p=>{if(!keep.has(sid(p)))pw[sid(p)].style.display='none'});
  const occ=[];groups.forEach(g=>{const cx=g.reduce((a,p)=>a+p._sx,0)/g.length,cy=g.reduce((a,p)=>a+p._sy,0)/g.length;
@@ -316,13 +334,14 @@ function layout(){const[vw,vh]=vsize();clEls.forEach(e=>e.remove());clEls=[];
  const hit=(r,o)=>r[0]<o[0]+o[2]&&r[0]+r[2]>o[0]&&r[1]<o[1]+o[3]&&r[1]+r[3]>o[1];
  order.forEach(p=>{const el=pw[sid(p)],l=el.querySelector('.lbl');el.style.transform=`translate(${p._sx}px,${p._sy}px)`;el.classList.toggle('sel',!!selected&&selected.id===p.id);
   pinEl[sid(p)].className='pin'+(selected&&selected.id===p.id?' sel':'')+(hasRec(p)?' rec':'')+(dragging&&dragging.p===p?' drag':'');
+  {const ri=routeIdx(p),pe=pinEl[sid(p)];if(ri>=0)pe.dataset.n=ri+1;else delete pe.dataset.n}
   l.className='lbl';if(!showLabels&&!forced(p))return;
   const w=p._lw,h=22,pos={r:[p._sx+12,p._sy-11],l:[p._sx-12-w,p._sy-11],t:[p._sx-w/2,p._sy-15-h],b:[p._sx-w/2,p._sy+15]};
   for(const k of['r','l','t','b']){const[x,y]=pos[k],r=[x,y,w,h];if(x<2||x+w>vw-2||y<2||y+h>vh-2)continue;if(occ.some(o=>hit(r,o))&&!forced(p))continue;l.className='lbl '+k;occ.push(r);break}
-  if(forced(p)&&l.className==='lbl')l.className='lbl r'})}
+  if(forced(p)&&l.className==='lbl')l.className='lbl r'});drawRoute()}
 /* ---------- 平移 / 缩放 ---------- */
 const ptrs=new Map();let pan=null,pinch=null;
-vp.addEventListener('pointerdown',e=>{if(e.target.closest('#calbar,.zoomc,.cl,.pin'))return;cancelAnimationFrame(anim);vp.setPointerCapture(e.pointerId);ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
+vp.addEventListener('pointerdown',e=>{if(e.target.closest('#calbar,#routeBar,.zoomc,.cl,.pin'))return;cancelAnimationFrame(anim);vp.setPointerCapture(e.pointerId);ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
  if(ptrs.size===1)pan={x:e.clientX,y:e.clientY,tx:view.tx,ty:view.ty,moved:false};
  if(ptrs.size===2){const[a,b]=[...ptrs.values()];pinch={d:Math.hypot(a.x-b.x,a.y-b.y),s:view.s,mx:(a.x+b.x)/2,my:(a.y+b.y)/2,tx:view.tx,ty:view.ty};pan=null}});
 vp.addEventListener('pointermove',e=>{if(!ptrs.has(e.pointerId))return;ptrs.set(e.pointerId,{x:e.clientX,y:e.clientY});
@@ -336,7 +355,7 @@ const upPtr=e=>{ptrs.delete(e.pointerId);if(ptrs.size<2)pinch=null;
  if(ptrs.size===0){pan=null;vp.classList.remove('panning')}};
 vp.addEventListener('pointerup',upPtr);vp.addEventListener('pointercancel',upPtr);
 vp.addEventListener('wheel',e=>{e.preventDefault();cancelAnimationFrame(anim);const r=vp.getBoundingClientRect();zoomAt(e.clientX-r.left,e.clientY-r.top,Math.exp(-e.deltaY*(e.ctrlKey?.01:.0016)))},{passive:false});
-vp.addEventListener('dblclick',e=>{if(e.target.closest('.pin,.cl,#calbar,.zoomc')||calibrating||adding)return;const r=vp.getBoundingClientRect(),ns=Math.min(maxS,view.s*2),f=ns/view.s,cx=e.clientX-r.left,cy=e.clientY-r.top;animateTo({s:ns,tx:cx-(cx-view.tx)*f,ty:cy-(cy-view.ty)*f},260)});
+vp.addEventListener('dblclick',e=>{if(e.target.closest('.pin,.cl,#calbar,#routeBar,.zoomc')||calibrating||adding)return;const r=vp.getBoundingClientRect(),ns=Math.min(maxS,view.s*2),f=ns/view.s,cx=e.clientX-r.left,cy=e.clientY-r.top;animateTo({s:ns,tx:cx-(cx-view.tx)*f,ty:cy-(cy-view.ty)*f},260)});
 $('zi').onclick=()=>{const[w,h]=vsize();zoomAt(w/2,h/2,1.6)};$('zo').onclick=()=>{const[w,h]=vsize();zoomAt(w/2,h/2,1/1.6)};
 $('tCore').onclick=()=>fitCore();$('tAll').onclick=fitAll;
 new ResizeObserver(()=>{setLimits();applyNow()}).observe(vp);
@@ -359,7 +378,7 @@ $('tAdd').onclick=()=>{if(adding){stopAdd();return}if(calibrating)$('tCal').clic
 function addPlaceAt(wx,wy){const id='c'+Date.now().toString(36);const x=+(wx/W*100).toFixed(4),y=+(wy/H*100).toFixed(4);
  D.custom.push({id,name:'新地点',district:'',category:'历史古迹',desc:'',x,y});buildPlaces();stopAdd();markDirty();const p=byId(id);selected=p;layout();renderList();openPlace(p,true)}
 addEventListener('keydown',e=>{
- if(e.key==='Escape'){if($('lb').classList.contains('open'))closeLb();else if($('login').classList.contains('open'))$('login').classList.remove('open');else if(adding)stopAdd();else closeModal();return}
+ if(e.key==='Escape'){if($('lb').classList.contains('open'))closeLb();else if($('login').classList.contains('open'))$('login').classList.remove('open');else if($('tour').classList.contains('open'))endTour();else if($('routeEd').classList.contains('open'))$('routeEd').classList.remove('open');else if($('routes').classList.contains('open'))$('routes').classList.remove('open');else if($('trash').classList.contains('open'))$('trash').classList.remove('open');else if(adding)stopAdd();else closeModal();return}
  if($('lb').classList.contains('open')){if(e.key==='ArrowLeft')lbGo(-1);if(e.key==='ArrowRight')lbGo(1);return}
  if(/INPUT|TEXTAREA|SELECT/.test(document.activeElement.tagName)||$('modal').classList.contains('open'))return;
  if(!calibrating||!selected)return;if((e.ctrlKey||e.metaKey)&&e.key==='z'){e.preventDefault();doUndo();return}
@@ -380,7 +399,7 @@ let editTimer=0;
 function photoURL(id,thumb){return '/api/photo/'+id+(thumb?'/t':'')}
 function openPlace(p,editInfo){cur=p;selected=p;fillHead();
  if(EDIT){const r=getR(p);$('fDate').value=r.date||'';$('fNote').value=r.note||'';$('fHidden').checked=!!r.hidden;$('saved').textContent='';renderGrid();
-  $('infoForm').classList.toggle('open',!!editInfo);$('delPlace').style.display=p.custom?'':'none';fillInfoForm()}
+  $('infoForm').classList.toggle('open',!!editInfo);fillInfoForm()}
  else renderView();
  $('modal').classList.add('open');try{history.replaceState(null,'',location.pathname+location.search+'#p='+p.id)}catch(e){}layout();renderList()}
 function fillHead(){const p=cur;$('mName').textContent=p.name;$('mCat').textContent=p.category;$('mDist').textContent=p.district||'';$('mDist').style.display=p.district?'':'none';$('mDesc').textContent=p.desc||'(暂无介绍)';$('mDesc').style.display=(p.desc||EDIT)?'':'none'}
@@ -392,7 +411,18 @@ function renderView(){const p=cur,r=getR(p),a=plist(p);let h='';
  if(a.length){h+=`<div class="vrow">现场照片(${a.length})</div><div class="grid" id="vgrid"></div>`}
  $('viewBlock').innerHTML=h;const g=$('vgrid');if(g)a.forEach((o,i)=>g.appendChild(thumbEl(o,i)))}
 function thumbEl(o,i){const t=document.createElement('button');t.className='th';t.innerHTML='<img alt="" loading="lazy"><span></span>';t.querySelector('img').src=photoURL(o.id,true);const s=t.querySelector('span');s.textContent=o.caption||'';if(!o.caption)s.style.display='none';t.onclick=()=>openLb(i);return t}
-function renderGrid(){const g=$('grid');g.innerHTML='';const a=plist(cur);$('pCnt').textContent=a.length?`(${a.length})`:'';a.forEach((o,i)=>g.appendChild(thumbEl(o,i)))}
+let dragSrc=-1;
+function movePhoto(i,d){const a=plist(cur),j=i+d;if(j<0||j>=a.length)return false;[a[i],a[j]]=[a[j],a[i]];markDirty();renderGrid();return true}
+function movePhotoTo(i,j){const a=plist(cur);if(i<0||i===j||j<0||j>=a.length)return;const[x]=a.splice(i,1);a.splice(j,0,x);markDirty();renderGrid()}
+function renderGrid(){const g=$('grid');g.innerHTML='';const a=plist(cur);$('pCnt').textContent=a.length?`(${a.length})`:'';
+ a.forEach((o,i)=>{const w=document.createElement('div');w.className='thw';w.draggable=a.length>1;w.appendChild(thumbEl(o,i));
+  if(a.length>1){const mv=document.createElement('div');mv.className='mv';const l=document.createElement('button'),r=document.createElement('button');l.textContent='◀';r.textContent='▶';l.title='往前移';r.title='往后移';l.disabled=i===0;r.disabled=i===a.length-1;
+   l.onclick=e=>{e.stopPropagation();movePhoto(i,-1)};r.onclick=e=>{e.stopPropagation();movePhoto(i,1)};mv.append(l,r);w.appendChild(mv);
+   if(i===0){const c=document.createElement('span');c.className='cv';c.textContent='封面';w.appendChild(c)}
+   w.addEventListener('dragstart',e=>{dragSrc=i;try{e.dataTransfer.setData('text/plain','photo');e.dataTransfer.effectAllowed='move'}catch(x){}});
+   w.addEventListener('dragover',e=>{if(dragSrc<0)return;e.preventDefault();w.classList.add('dover')});w.addEventListener('dragleave',()=>w.classList.remove('dover'));
+   w.addEventListener('drop',e=>{if(dragSrc<0)return;e.preventDefault();w.classList.remove('dover');const s=dragSrc;dragSrc=-1;movePhotoTo(s,i)});w.addEventListener('dragend',()=>{dragSrc=-1})}
+  g.appendChild(w)})}
 function closeModal(){if(!cur)return;flushEdit();$('modal').classList.remove('open');cur=null;try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}layout();renderList()}
 $('mClose').onclick=closeModal;$('modal').addEventListener('pointerdown',e=>{if(e.target.id==='modal')closeModal()});
 $('mShare').onclick=async()=>{const u=location.origin+location.pathname+'#p='+cur.id;try{await navigator.clipboard.writeText(u);toast('已复制这个地点的链接')}catch(e){prompt('复制链接:',u)}};
@@ -404,9 +434,18 @@ function saveInfo(){const p=cur;const info={name:$('iName').value.trim()||p.name
  if(p.custom){const c=D.custom.find(x=>String(x.id)===String(p.id));Object.assign(c,info)}else R(p).info=info;
  Object.assign(p,info);p._lw=0;fillHead();markDirty();renderFilters();layout();renderList()}
 ['iName','iDist','iDesc'].forEach(i=>$(i).oninput=()=>{clearTimeout(saveInfo._t);saveInfo._t=setTimeout(saveInfo,500)});$('iCat').onchange=saveInfo;
-$('delPlace').onclick=()=>{if(!confirm('确定删除「'+cur.name+'」及其记录?此操作不能撤销。照片文件也会一起删除。'))return;const id=cur.id,ph=plist(cur).slice();
- D.custom=D.custom.filter(c=>String(c.id)!==String(id));delete D.places[String(id)];delete D.photos[String(id)];ph.forEach(o=>api('photo/'+o.id,{method:'DELETE'}));
- const k=String(id);if(pw[k]){pw[k].remove();delete pw[k];delete pinEl[k]}buildPlaces();selected=null;$('modal').classList.remove('open');cur=null;markDirty();renderFilters();layout();renderList()};
+$('delPlace').onclick=()=>{const p=cur;if(!p)return;const ph=plist(p).slice();
+ if(p.custom){if(!confirm(`确定永久删除「${p.name}」吗?\n它的记录${ph.length?'和 '+ph.length+' 张照片':''}会一起删除,不能恢复。`))return;
+  D.custom=D.custom.filter(c=>String(c.id)!==String(p.id));delete D.places[String(p.id)];delete D.photos[String(p.id)];ph.forEach(o=>api('photo/'+o.id,{method:'DELETE'}))}
+ else{if(!confirm(`把「${p.name}」从地图上移除吗?\n这是预置地点,移除后访客也看不到它;你可以在左侧下方的“已删除的地点”里恢复。`))return;R(p).deleted=1}
+ selected=null;$('modal').classList.remove('open');cur=null;try{history.replaceState(null,'',location.pathname+location.search)}catch(e){}buildPlaces();markDirty();renderFilters();layout();renderList();updateTrash();toast('已删除')};
+function updateTrash(){const n=PLACES.filter(b=>(D.places[String(b.id)]||{}).deleted).length;$('bTrash').textContent='🗑 已删除的地点'+(n?' ('+n+')':'')}
+$('bTrash').onclick=()=>{const L=$('trashList');L.innerHTML='';const del=PLACES.filter(b=>(D.places[String(b.id)]||{}).deleted);
+ if(!del.length)L.innerHTML='<p class="muted">目前没有已删除的地点。</p>';
+ del.forEach(b=>{const r=document.createElement('div');r.className='rrow';r.innerHTML='<span>'+esc(b.name)+'</span>';const bt=document.createElement('button');bt.textContent='恢复';bt.style.width='auto';bt.style.padding='0 10px';
+  bt.onclick=()=>{delete D.places[String(b.id)].deleted;buildPlaces();markDirty();renderFilters();layout();renderList();updateTrash();$('bTrash').click()};r.appendChild(bt);L.appendChild(r)});
+ $('trash').classList.add('open')};
+$('trashClose').onclick=()=>$('trash').classList.remove('open');
 /* ---------- 照片 ---------- */
 async function toBlob(src,max,q){let bmp;try{bmp=await createImageBitmap(src,{imageOrientation:'from-image'})}catch(e){bmp=await new Promise((res,rej)=>{const i=new Image();i.onload=()=>res(i);i.onerror=rej;i.src=URL.createObjectURL(src)})}
  const w=bmp.width||bmp.naturalWidth,h=bmp.height||bmp.naturalHeight,s=Math.min(1,max/Math.max(w,h)),c=document.createElement('canvas');c.width=Math.round(w*s);c.height=Math.round(h*s);
@@ -430,6 +469,7 @@ $('lbPrev').onclick=()=>lbGo(-1);$('lbNext').onclick=()=>lbGo(1);$('lbClose').on
 $('lb').addEventListener('pointerdown',e=>{if(e.target.id==='lb')closeLb()});
 let tx0=null;$('lbImg').addEventListener('touchstart',e=>{tx0=e.touches[0].clientX},{passive:true});$('lbImg').addEventListener('touchend',e=>{if(tx0===null)return;const dx=e.changedTouches[0].clientX-tx0;tx0=null;if(Math.abs(dx)>50)lbGo(dx<0?1:-1)});
 $('lbCap').oninput=e=>{const o=plist(cur)[lbI];o.caption=e.target.value;markDirty()};
+$('lbL').onclick=()=>{if(movePhoto(lbI,-1)){lbI--;lbShow()}};$('lbR').onclick=()=>{if(movePhoto(lbI,1)){lbI++;lbShow()}};
 $('lbDel').onclick=()=>{const a=plist(cur),o=a[lbI];if(!o)return;const idx=lbI;a.splice(idx,1);markDirty();lbShow();const pid=sid(cur);
  let undone=false;const tm=setTimeout(()=>{if(!undone)api('photo/'+o.id,{method:'DELETE'})},8000);
  toast('已删除一张照片',{action:'撤销',fn:()=>{undone=true;clearTimeout(tm);(D.photos[pid]||(D.photos[pid]=[])).splice(idx,0,o);markDirty();if(cur&&sid(cur)===pid){renderGrid()}renderList();layout()},ms:8000})};
@@ -448,52 +488,97 @@ $('bRst').onclick=()=>{if(!confirm('把全部点位恢复到初始位置?(参观
 /* ---------- 提示条 ---------- */
 let tt;function toast(m,o={}){const t=$('toast');$('toastMsg').textContent=m;const b=$('toastAct');if(o.action){b.style.display='';b.textContent=o.action;b.onclick=()=>{o.fn();t.classList.remove('show')}}else b.style.display='none';t.classList.add('show');clearTimeout(tt);if(!o.keep)tt=setTimeout(()=>t.classList.remove('show'),o.ms||2600)}
 /* ---------- 登录 ---------- */
-async function tryLogin(pw){try{const r=await fetch('/api/login',{method:'POST',headers:{'x-edit-password':pw}});return r.ok}catch(e){return null}}
+async function tryLogin(pw){try{const r=await fetch('/api/login',{method:'POST',headers:{'x-edit-password':pw}});if(r.ok)return{ok:true};let msg='';try{msg=(await r.json()).error||''}catch(e){}return{ok:false,status:r.status,msg}}catch(e){return{ok:false,status:0,msg:String(e)}}}
+function loginMsg(r){if(r.status===401)return'密码不对,请再试一次(输入法请切到英文,前后不要有空格)';if(r.status===0)return'连不上服务器,请稍后重试';if(r.status===404||r.status===405)return'网站的保存程序没有运行(状态码 '+r.status+'),不是密码问题,请把这条提示告诉 Claude';return'服务器返回异常(状态码 '+r.status+(r.msg?':'+r.msg:'')+'),不是密码问题,请把这条提示告诉 Claude'}
 function askLogin(){return new Promise(res=>{const m=$('login');m.classList.add('open');$('pw').value='';$('loginErr').textContent='';setTimeout(()=>$('pw').focus(),50);
  const ok=async()=>{const v=$('pw').value;if(!v)return;$('loginOk').disabled=true;const r=await tryLogin(v);$('loginOk').disabled=false;
-  if(r===true){m.classList.remove('open');cleanup();res(v)}else{$('loginErr').textContent=r===null?'连不上服务器,请稍后重试':'密码不对,请再试一次'}};
+  if(r.ok){m.classList.remove('open');cleanup();res(v)}else{$('loginErr').textContent=loginMsg(r)}};
  const cancel=()=>{m.classList.remove('open');cleanup();res(null)};
  const key=e=>{if(e.key==='Enter')ok()};const cleanup=()=>{$('loginOk').onclick=null;$('loginCancel').onclick=null;$('pw').removeEventListener('keydown',key)};
  $('loginOk').onclick=ok;$('loginCancel').onclick=cancel;$('pw').addEventListener('keydown',key)})}
 $('bOut').onclick=()=>{try{localStorage.removeItem('gz-edit-pw')}catch(e){}location.href=location.pathname};
-/* ---------- 首次访客引导 ---------- */
-const TOUR_KEY='gz-footprints-tour-done';
-const TOUR_STEPS=[
- {title:'点地图标记，打开地点',text:'点击红色标记，可以查看这处遗迹的参观记录、个人感想和现场照片。'},
- {title:'用分类筛选想看的地点',text:'地图上方的分类按钮可以筛选历史古迹、自然景观和公园；也可以用右侧目录搜索地点名称或行政区。'},
- {title:'缩放地图，探索细节',text:'用地图右下角的＋／－按钮缩放，也可以在手机上双指缩放、拖动地图浏览。'}
+
+/* ---------- 专题路线 ---------- */
+const DEFAULT_ROUTES=[
+ {id:'r_geming',title:'近代革命足迹',intro:'从 1911 年的黄花岗起义到 1927 年的广州起义,沿着时间顺序走过广州的近代革命旧址。',stops:['9','24','4','10','3','5','12']},
+ {id:'r_sunzs',title:'孙中山在广州',intro:'大元帅府、黄埔军校、中山纪念堂——孙中山晚年在广州的活动与后世的纪念。',stops:['4','10','14']},
+ {id:'r_xiguan',title:'西关老城与十三行',intro:'从十三行旧址、沙面租界到粤海关,再走进西关的陈家祠与粤剧——看近代对外贸易、中西建筑与市井文化。',stops:['8','19','17','36','21','23','20']},
+ {id:'r_guzcheng',title:'千年古城(越秀老城)',intro:'从西汉南越国到南朝古刹,再到清末的石室教堂,越秀老城叠着两千多年的历史。',stops:['11','15','22','25','6','16','2']},
+ {id:'r_shanshui',title:'山水与公园漫步',intro:'白云山、越秀山、湖畔与江心岛——广州城里的绿地与水岸。',stops:['26','31','43','40','41']}
 ];
-let tourStep=0;
-function renderTour(){
- const step=TOUR_STEPS[tourStep];$('tourCount').textContent=`地图小指南 · ${tourStep+1}/${TOUR_STEPS.length}`;
- $('tourTitle').textContent=step.title;$('tourText').textContent=step.text;
- $('tourDots').innerHTML=TOUR_STEPS.map((_,i)=>`<i class="${i===tourStep?'on':''}"></i>`).join('');
- $('tourPrev').style.display=tourStep?'':'none';
- $('tourNext').textContent=tourStep===TOUR_STEPS.length-1?'开始探索':'下一步';
-}
-function openTour(){tourStep=0;renderTour();$('tour').classList.add('open');$('tour').setAttribute('aria-hidden','false')}
-function closeTour(){
- $('tour').classList.remove('open');$('tour').setAttribute('aria-hidden','true');
- try{localStorage.setItem(TOUR_KEY,'1')}catch(e){}
-}
-$('tourNext').onclick=()=>{if(tourStep<TOUR_STEPS.length-1){tourStep++;renderTour()}else closeTour()};
-$('tourPrev').onclick=()=>{if(tourStep>0){tourStep--;renderTour()}};
-$('tourSkip').onclick=closeTour;
-$('tHelp').onclick=openTour;
-$('tour').addEventListener('pointerdown',e=>{if(e.target.id==='tour')closeTour()});
+let route=null;
+const getRoutes=()=>D.routes||DEFAULT_ROUTES;
+const routeStops=r=>r.stops.map(id=>byId(id)).filter(Boolean);
+function routeIdx(p){if(!route)return -1;return route.r.stops.indexOf(sid(p))}
+const svgNS='http://www.w3.org/2000/svg';let routeSvg=null,routePath=null;
+function drawRoute(){if(!routeSvg){routeSvg=document.createElementNS(svgNS,'svg');routeSvg.id='routeSvg';routePath=document.createElementNS(svgNS,'path');routePath.setAttribute('fill','none');routePath.setAttribute('stroke','#b03a2e');routePath.setAttribute('stroke-width','3');routePath.setAttribute('stroke-dasharray','8 7');routePath.setAttribute('stroke-linecap','round');routePath.setAttribute('opacity','.75');routeSvg.appendChild(routePath);layer.insertBefore(routeSvg,layer.firstChild)}
+ if(!route){routePath.setAttribute('d','');return}
+ const pts=routeStops(route.r).map(p=>[p.x/100*W*view.s+view.tx,p.y/100*H*view.s+view.ty]);routePath.setAttribute('d',pts.length>1?'M'+pts.map(q=>q[0].toFixed(1)+' '+q[1].toFixed(1)).join(' L'):'')}
+function openRoutes(){const L=$('routeList');L.innerHTML='';const rs=getRoutes().filter(r=>EDIT||routeStops(r).length);
+ if(!rs.length)L.innerHTML='<p class="muted">还没有专题路线。</p>';
+ rs.forEach(r=>{const st=routeStops(r),k=st.filter(hasRec).length;const c=document.createElement('div');const b=document.createElement('button');b.className='rcard';
+  b.innerHTML=`<h4>${esc(r.title)}</h4><p>${esc(r.intro||'')}</p><small>${st.length} 站${k?' · 已去过 '+k+' 处':''}</small>`;b.onclick=()=>startRoute(r);c.appendChild(b);
+  if(EDIT){const e=document.createElement('button');e.className='x';e.style.marginTop='6px';e.textContent='✎ 编辑这个专题';e.onclick=()=>openRouteEd(r);c.appendChild(e)}L.appendChild(c)});
+ $('routes').classList.add('open')}
+$('tRoutes').onclick=openRoutes;$('routesClose').onclick=()=>$('routes').classList.remove('open');
+function startRoute(r){$('routes').classList.remove('open');if(calibrating)$('tCal').click();if(adding)stopAdd();closeModal();route={r,i:-1};selected=null;filter='全部';renderFilters();document.body.classList.add('routing');
+ const st=routeStops(r);if(!st.length){exitRoute();return}const[a,b,c,d]=pctBox(st),tg=boxTarget(a,b,c,d,90,1.2);tg.ty-=55;animateTo(tg);routeBar();layout();renderList()}
+function routeBar(){const bar=$('routeBar');if(!route){bar.classList.remove('show');return}const r=route.r,st=routeStops(r),i=route.i;bar.classList.add('show');
+ if(i<0){bar.innerHTML=`<b>${esc(r.title)}</b> · 共 ${st.length} 站<br>${esc(r.intro||'')}<div class="row"><button class="pri" id="rbGo">开始:第 1 站 ›</button><button id="rbExit">退出专题</button></div>`;$('rbGo').onclick=()=>stepRoute(1)}
+ else{const p=st[i],d=(p.desc||'').length>76?p.desc.slice(0,76)+'…':(p.desc||'');
+  bar.innerHTML=`<b>${esc(r.title)}</b> · 第 ${i+1} / ${st.length} 站<br><b style="color:#fff">${esc(short(p.name))}</b> <span style="opacity:.7">${esc(p.district||'')}</span><br><span style="opacity:.85">${esc(d)}</span>
+  <div class="row"><button id="rbPrev" ${i===0?'disabled':''}>‹ 上一站</button><button class="pri" id="rbNext" ${i===st.length-1?'disabled':''}>下一站 ›</button><button id="rbInfo">查看详情</button><button id="rbExit">退出专题</button></div>`;
+  $('rbPrev').onclick=()=>stepRoute(-1);$('rbNext').onclick=()=>stepRoute(1);$('rbInfo').onclick=()=>openPlace(p)}
+ $('rbExit').onclick=exitRoute}
+function stepRoute(d){const st=routeStops(route.r);route.i=Math.max(0,Math.min(st.length-1,route.i+d));const p=st[route.i];selected=p;flyTo(p,.45,60);routeBar();layout();renderList()}
+function exitRoute(){route=null;selected=null;document.body.classList.remove('routing');routeBar();layout();renderList();fitCore()}
+/* 专题编辑 */
+let ed=null;
+function openRouteEd(r){ed=r?{id:r.id,title:r.title,intro:r.intro||'',stops:r.stops.filter(id=>byId(id)).slice()}:{id:null,title:'',intro:'',stops:[]};
+ $('reTitle').textContent=r?'编辑专题':'新建专题';$('reName').value=ed.title;$('reIntro').value=ed.intro;$('reDel').style.display=r?'':'none';renderEd();$('routes').classList.remove('open');$('routeEd').classList.add('open')}
+function renderEd(){const L=$('reStops');L.innerHTML='';if(!ed.stops.length)L.innerHTML='<p class="muted">还没有地点,请从下面添加。</p>';
+ ed.stops.forEach((id,i)=>{const p=byId(id);const r=document.createElement('div');r.className='rrow';r.innerHTML=`<b style="width:20px">${i+1}</b><span>${esc(p?short(p.name):id)}</span>`;
+  [['▲',-1],['▼',1]].forEach(([s,d])=>{const b=document.createElement('button');b.textContent=s;b.onclick=()=>{const j=i+d;if(j<0||j>=ed.stops.length)return;[ed.stops[i],ed.stops[j]]=[ed.stops[j],ed.stops[i]];renderEd()};r.appendChild(b)});
+  const x=document.createElement('button');x.textContent='✕';x.onclick=()=>{ed.stops.splice(i,1);renderEd()};r.appendChild(x);L.appendChild(r)});
+ const sel=$('reAdd');sel.innerHTML='<option value="">— 选择要加入的地点 —</option>'+places.filter(p=>!ed.stops.includes(sid(p))).map(p=>`<option value="${esc(sid(p))}">${esc(short(p.name))}(${esc(p.district||'')})</option>`).join('')}
+$('reAdd').onchange=e=>{if(e.target.value){ed.stops.push(e.target.value);renderEd()}};
+$('reCancel').onclick=()=>{$('routeEd').classList.remove('open');openRoutes()};
+$('reSave').onclick=()=>{const title=$('reName').value.trim();if(!title){toast('请先给专题起个名字');return}if(!ed.stops.length){toast('至少加入一个地点');return}
+ if(!D.routes)D.routes=JSON.parse(JSON.stringify(DEFAULT_ROUTES));const o={id:ed.id||'r'+Date.now().toString(36),title,intro:$('reIntro').value.trim(),stops:ed.stops};
+ const k=D.routes.findIndex(r=>r.id===o.id);if(k>=0)D.routes[k]=o;else D.routes.push(o);markDirty();$('routeEd').classList.remove('open');openRoutes();toast('专题已保存')};
+$('reDel').onclick=()=>{if(!confirm('确定删除专题「'+ed.title+'」?(不会删除地点)'))return;if(!D.routes)D.routes=JSON.parse(JSON.stringify(DEFAULT_ROUTES));D.routes=D.routes.filter(r=>r.id!==ed.id);markDirty();$('routeEd').classList.remove('open');openRoutes()};
+$('routeNew').onclick=()=>openRouteEd(null);
+/* ---------- 首次引导 ---------- */
+const TOUR=[
+ {el:'#vp',t:'这是一张广州地图',d:'红点是我亲自去过的地方。点一下红点,看当时的故事、感想和现场照片;滚轮或双指缩放,按住拖动平移。'},
+ {el:'#filters',t:'按类别筛选',d:'可以只看历史古迹、自然景观或公园。数字是每一类的地点数量。'},
+ {el:'#tRoutes',t:'跟着专题走',d:'比如“近代革命足迹”“西关老城”,选一条路线,一站一站地看,地图会带你飞过去。'},
+ {el:'.side',t:'全部地点在这里',d:'目录里可以搜索地点或区名,点一下就会飞到对应位置。想再看一遍引导,点工具栏里的“？”。'}];
+let tourI=0;
+function tourShow(){const s=TOUR[tourI];let el=document.querySelector(s.el);if(!el)return;el.scrollIntoView({block:'nearest'});const r=el.getBoundingClientRect(),pad=6,h=$('tourHole');
+ Object.assign(h.style,{left:r.left-pad+'px',top:r.top-pad+'px',width:r.width+pad*2+'px',height:Math.min(r.height,innerHeight-r.top)+pad*2+'px'});
+ $('tourN').textContent=`${tourI+1} / ${TOUR.length}`;$('tourT').textContent=s.t;$('tourD').textContent=s.d;$('tourPrev').style.visibility=tourI?'visible':'hidden';$('tourNext').textContent=tourI===TOUR.length-1?'完成':'下一步';
+ const c=$('tourCard');c.style.left=Math.max(10,Math.min(innerWidth-c.offsetWidth-10,r.left))+'px';
+ let top;if(r.height>innerHeight*.5)top=Math.max(10,r.top+16);else if(r.bottom+16+c.offsetHeight<innerHeight)top=r.bottom+16;else top=Math.max(10,r.top-16-c.offsetHeight);c.style.top=top+'px'}
+function startTour(){tourI=0;$('tour').classList.add('open');tourShow()}
+function endTour(){$('tour').classList.remove('open');try{localStorage.setItem('gz-tour-1','1')}catch(e){}}
+$('tourNext').onclick=()=>{if(tourI>=TOUR.length-1){endTour();return}tourI++;tourShow()};$('tourPrev').onclick=()=>{tourI=Math.max(0,tourI-1);tourShow()};$('tourSkip').onclick=endTour;
+addEventListener('resize',()=>{if($('tour').classList.contains('open'))tourShow()});$('tHelp').onclick=startTour;
+
 /* ---------- 启动 ---------- */
 async function loadData(){try{const r=await api('data'+(EDIT?'?full=1':''));if(r.ok){D=Object.assign(emptyD(),await r.json());cloudOK=true;return true}if(r.status===401&&EDIT){return 'auth'}}catch(e){}cloudOK=false;return false}
 (async function(){
  setLabBtn();setHint();renderFilters();buildPlaces();renderList();setLimits();
  const want=new URLSearchParams(location.search).has('edit');
  if(want){let pw='';try{pw=localStorage.getItem('gz-edit-pw')||''}catch(e){}
-  if(!pw||(await tryLogin(pw))!==true)pw=await askLogin();
+  if(!pw||!(await tryLogin(pw)).ok)pw=await askLogin();
   if(pw){PW=pw;EDIT=true;try{localStorage.setItem('gz-edit-pw',pw)}catch(e){}document.body.classList.add('edit')}}
  const r=await loadData();
  if(r==='auth'){EDIT=false;PW='';document.body.classList.remove('edit');try{localStorage.removeItem('gz-edit-pw')}catch(e){}await loadData()}
  if(!cloudOK&&EDIT){setSync('err','⚠ 无法连接云端');toast('无法连接云端,当前改动不会被保存')}
  buildPlaces();renderFilters();renderList();fitCore(false);
+ updateTrash();
  const m=location.hash.match(/#p=([\w-]+)/);if(m){const p=byId(m[1]);if(p){flyTo(p,.5);openPlace(p)}}
- if(!EDIT&&!m){let seen=false;try{seen=localStorage.getItem(TOUR_KEY)==='1'}catch(e){}if(!seen)openTour()}
+ else{let seen=false;try{seen=localStorage.getItem('gz-tour-1')==='1'}catch(e){}if(!EDIT&&!seen)setTimeout(()=>{if(!$('modal').classList.contains('open'))startTour()},1500)}
 })();
 </script></body></html>
