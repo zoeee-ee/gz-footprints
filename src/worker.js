@@ -32,14 +32,24 @@ function publicView(d) {
   const places = {}, photos = {};
   const hidden = new Set();
   for (const [id, p] of Object.entries(d.places || {})) {
-    if (p && p.hidden) { hidden.add(String(id)); continue; }
+    if (p && p.hidden) {
+      // 仅自己可见:保留位置/名称等"外观"信息,去掉参观时间和感想
+      hidden.add(String(id));
+      const safe = {};
+      for (const k of ['x', 'y', 'lng', 'lat', 'deleted', 'info']) if (p[k] !== undefined) safe[k] = p[k];
+      places[id] = safe;
+      continue;
+    }
     places[id] = p;
   }
   const custom = (d.custom || []).filter((c) => !hidden.has(String(c.id)));
   for (const [pid, list] of Object.entries(d.photos || {})) {
     if (!hidden.has(String(pid))) photos[pid] = list;
   }
-  return { rev: d.rev || 0, places, custom, photos };
+  const out = { rev: d.rev || 0, places, custom, photos };
+  if (Array.isArray(d.cats)) out.cats = d.cats;
+  if (d.routes) out.routes = d.routes.map((r) => ({ ...r, stops: (r.stops || []).filter((s) => !hidden.has(String(s)) || !(d.custom || []).some((c) => String(c.id) === String(s))) }));
+  return out;
 }
 
 const ID_RE = /^[a-z0-9]{6,40}$/;
@@ -48,12 +58,33 @@ export default {
   async fetch(req, env) {
     const url = new URL(req.url);
     const path = url.pathname;
+    // ---- 高德地图服务代理:安全密钥只放在服务器上,不出现在网页里 ----
+    if (path.startsWith('/api/amap/')) {
+      const sameSite = req.headers.get('sec-fetch-site') === 'same-origin' ||
+        (() => { try { return new URL(req.headers.get('referer') || '').host === url.host; } catch (e) { return false; } })();
+      if (!sameSite) return new Response('forbidden', { status: 403 });
+      if (!env.AMAP_JSCODE) return J({ status: '0', info: 'MISSING_JSCODE', infocode: '99999' }, 500);
+      const sub = path.slice('/api/amap'.length);
+      if (!/^\/(v3|v4|v5)\/[a-zA-Z0-9_\/]+$/.test(sub)) return new Response('bad path', { status: 400 });
+      const q = new URLSearchParams(url.search);
+      q.delete('jscode');
+      q.set('jscode', env.AMAP_JSCODE);
+      const up = await fetch('https://restapi.amap.com' + sub + '?' + q.toString(), { method: 'GET', headers: { accept: '*/*' } });
+      return new Response(up.body, { status: up.status, headers: { 'content-type': up.headers.get('content-type') || 'application/json', 'cache-control': 'no-store' } });
+    }
     if (!path.startsWith('/api/')) return env.ASSETS.fetch(req);
-    if (!env.BUCKET) return J({ error: '服务器没有绑定 R2 存储桶(BUCKET)' }, 500);
+    if (path === '/api/ping') return J({ worker: true, hasPassword: !!env.EDIT_PASSWORD, hasBucket: !!env.BUCKET, hasAmapCode: !!env.AMAP_JSCODE });
+    if (!env.BUCKET) return J({ error: '服务器没有绑定 R2 存储桶(BUCKET),请确认已创建名为 gz-footprints 的存储桶' }, 500);
 
     try {
+      // ---- 状态检查(不泄露任何密码内容)----
+      if (path === '/api/ping') {
+        return J({ worker: true, hasPassword: !!env.EDIT_PASSWORD, hasBucket: !!env.BUCKET });
+      }
+
       // ---- 登录检查 ----
       if (path === '/api/login' && req.method === 'POST') {
+        if (!env.EDIT_PASSWORD) return J({ error: '服务器上没有找到 EDIT_PASSWORD 这个变量' }, 500);
         if (await isOwner(req, env)) return J({ ok: true });
         await new Promise((r) => setTimeout(r, 800)); // 减缓暴力尝试
         return J({ ok: false }, 401);
@@ -84,6 +115,8 @@ export default {
           custom: body.custom || [],
           photos: body.photos || {},
         };
+        if (Array.isArray(body.routes)) next.routes = body.routes;
+        if (Array.isArray(body.cats)) next.cats = body.cats;
         await env.BUCKET.put('data.json', JSON.stringify(next), { httpMetadata: { contentType: 'application/json' } });
         // 每次保存留一份当天备份(同一天覆盖)
         const day = new Date().toISOString().slice(0, 10);
