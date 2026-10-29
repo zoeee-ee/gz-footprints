@@ -58,6 +58,20 @@ export default {
   async fetch(req, env) {
     const url = new URL(req.url);
     const path = url.pathname;
+    // ---- 高德连通性自检(不泄露密钥,只显示长度和首尾各 2 位)----
+    if (path === '/api/amap-test') {
+      const code = String(env.AMAP_JSCODE || '');
+      const KEY = '310a124def01e22c2832e28ee2641446';
+      const info = { hasCode: !!code, codeLength: code.length, codeShape: code ? code.slice(0, 2) + '…' + code.slice(-2) : '', hasWhitespace: /\s/.test(code) };
+      if (code) {
+        try {
+          const r = await fetch('https://restapi.amap.com/v3/place/text?keywords=' + encodeURIComponent('黄鹤楼') + '&key=' + KEY + '&jscode=' + encodeURIComponent(code.trim()));
+          const j = await r.json();
+          info.amap = { status: j.status, info: j.info, infocode: j.infocode, count: j.count };
+        } catch (e) { info.error = String((e && e.message) || e); }
+      }
+      return J(info);
+    }
     // ---- 高德地图服务代理:安全密钥只放在服务器上,不出现在网页里 ----
     if (path.startsWith('/api/amap/')) {
       const sameSite = req.headers.get('sec-fetch-site') === 'same-origin' ||
